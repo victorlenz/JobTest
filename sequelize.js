@@ -25,7 +25,7 @@ var pool = {
       },
       port: process.env.DB_PORT,
       pool: pool,
-      logging: true,
+      logging: false,
       operatorsAliases: Op
     }
   )

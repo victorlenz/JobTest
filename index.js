@@ -3,10 +3,18 @@ const http = require('http')
 require('dotenv').config()
 require('./sequelize')
 const app = express()
+const SimpleController = require('./Utilities/Controller')
 
 //create records in db
-app.post('/create',(req, res) => {
-
+app.post('/create', async (req, res) => {
+    try{
+        console.log("hmmm")
+        await SimpleController.createRecords()
+        res.send('success')
+    }catch(err){
+        console.log(err)
+        res.send('oops')
+    }
 })
 
 //downloads records

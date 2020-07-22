@@ -1,7 +1,7 @@
 
 const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
-
-class Factory {
+const EventEmitter = require('events')
+class Factory extends EventEmitter{
    
     constructor(count){
         this.count=count
@@ -15,7 +15,16 @@ class Factory {
                 dictionaries: [adjectives, animals, colors], // colors can be omitted here as not used
                 length: 2
               }))
+              iteration++
+              
+              if(iteration === 1000){
+                return this.emit('data', elements.splice() )
+             }
+             elements=[]
         }
-        return elements
+
+        this.emit('finish')
     }
 }
+
+module.exports = Factory
