@@ -46,6 +46,10 @@ class SimpleController {
     getRecords(limit=10, offset=0){
         return NameTable.findAndCountAll({limit,offset})
     }
+
+    createIndex(){
+        return DB.sequelize.query('create index index_names_name on names (name)')
+    }
 }
 
 module.exports = new SimpleController()
