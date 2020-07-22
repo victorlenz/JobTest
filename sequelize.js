@@ -1,3 +1,7 @@
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
+const path = require('path')
+var db ={}
 var pool = {
     min: process.env.SEQ_POOL_MAX || 0,
     max: process.env.SEQ_POOL_MAX || 2000,
@@ -21,7 +25,7 @@ var pool = {
       },
       port: process.env.DB_PORT,
       pool: pool,
-      logging: false,
+      logging: true,
       operatorsAliases: Op
     }
   )
@@ -31,14 +35,31 @@ var pool = {
     .authenticate()
     .then(() => {
       console.log('Sequelize: Connection has been established successfully.')
+       
     })
     .catch((err) => {
       console.error(err)
       throw err
     })
-  
-  // loop through all files in models directory
-  fs.readdirSync(path.join(modelPath, 'models')).forEach(function (file) {
-    var model = sequelize.import(path.join(modelPath, 'models', file))
+
+    //import all models
+    var model = sequelize.import(path.join('Models', 'names.models.js'));
     db[model.name] = model
-  })
+
+    // Synchronizing any model changes with database.
+    sequelize
+        .sync({
+        force: false
+        })
+        .then(function () {})
+        .catch((err) => {
+        throw err
+        })
+    
+  
+    
+  
+    // assign the sequelize variables to the db object and returning the db.
+db.sequelize = sequelize
+db.Sequelize = Sequelize
+module.exports = db
