@@ -11,6 +11,8 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "sequelize": "^6.3.3"
+    "pg": "^8.3.0",
+    "sequelize": "^5.22.3",
+    "unique-names-generator": "^4.3.0"
   }
 }
