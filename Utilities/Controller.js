@@ -32,7 +32,7 @@ class SimpleController {
     setDownloadHeaders(res){
         // set header as JSON
         res.statusCode = 200
-        res.setHeader('Content-type', 'application/json')
+        res.setHeader('Content-type', 'text/csv')
         
         res.setHeader('Access-Control-Allow-Origin', '*')
 
