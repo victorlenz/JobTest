@@ -6,12 +6,9 @@ class SimpleController {
     constructor(){}
 
      createRecords(){
-        console.log("working")
-
          return new Promise((resolve, reject) => {
             const namesGen = new Factory(1000000)
             namesGen.on('data', (data = []) => {
-                console.log("incoming data", data.length)
               NameTable.bulkCreate(data.map(e => ({name:e})))
               .catch(err => {
                   reject(err)
@@ -19,7 +16,6 @@ class SimpleController {
             })
             
             namesGen.on('finish', () => {
-                console.log('finish')
                 resolve()
             })
 
@@ -29,7 +25,27 @@ class SimpleController {
         
     }
 
-    async downloadRecords(){}
+    async downloadRecords(){
+
+    }
+
+    setDownloadHeaders(res){
+        // set header as JSON
+        res.statusCode = 200
+        res.setHeader('Content-type', 'application/json')
+        
+        res.setHeader('Access-Control-Allow-Origin', '*')
+
+        // Header to force download
+        res.setHeader('Content-disposition', 'attachment; filename=data.json')
+        
+        //to close the connection automatically
+        res.set('Connection', 'close')
+    }
+
+    getRecords(limit=10, offset=0){
+        return NameTable.findAndCountAll({limit,offset})
+    }
 }
 
 module.exports = new SimpleController()
