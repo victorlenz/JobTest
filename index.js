@@ -17,6 +17,17 @@ app.post('/create', async (req, res) => {
     }
 })
 
+//create records in db
+app.post('/create-index', async (req, res) => {
+    try{
+        await SimpleController.createIndex()
+        res.send('success')
+    }catch(err){
+        console.log(err)
+        res.send('oops')
+    }
+})
+
 //downloads records
 app.get('/download', async (req, res) => {
     SimpleController.setDownloadHeaders(res)
@@ -37,8 +48,6 @@ app.get('/download', async (req, res) => {
 
     const leftouts = content.count % chunkLength
 
-    // send first bytes as bracket as we want to send array of objects: [ {},{}]
-    //res.write('[') // array starting bracket
     try {
       while (true) {
         const offset = (page - 1) * chunkLength
@@ -64,7 +73,7 @@ app.get('/download', async (req, res) => {
         csv = csv.join('\n')
         
         res.write(csv)
-        // its the last page so we do not put "," at the end as: [.....{},{}
+
         if (page === totalPages) {
           break
         }
