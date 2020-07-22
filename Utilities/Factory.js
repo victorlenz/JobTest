@@ -4,6 +4,7 @@ const EventEmitter = require('events')
 class Factory extends EventEmitter{
    
     constructor(count){
+        super()
         this.count=count
     }
 
@@ -15,14 +16,15 @@ class Factory extends EventEmitter{
                 dictionaries: [adjectives, animals, colors], // colors can be omitted here as not used
                 length: 2
               }))
-              iteration++
-              
-              if(iteration === 1000){
-                return this.emit('data', elements.splice() )
+              if(iteration%1000 == 0){
+                const copy = JSON.parse(JSON.stringify(elements))
+                this.emit('data', copy)
+                elements=[]
              }
-             elements=[]
+             iteration++
         }
-
+        //emit left outs
+        this.emit('data', elements)
         this.emit('finish')
     }
 }
